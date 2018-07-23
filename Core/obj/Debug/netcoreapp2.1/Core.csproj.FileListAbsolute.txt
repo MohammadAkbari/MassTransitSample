@@ -1,9 +1,0 @@
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\bin\Debug\netcoreapp2.1\Core.deps.json
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\bin\Debug\netcoreapp2.1\Core.dll
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\bin\Debug\netcoreapp2.1\Core.pdb
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\obj\Debug\netcoreapp2.1\Core.csproj.CoreCompileInputs.cache
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\obj\Debug\netcoreapp2.1\Core.AssemblyInfoInputs.cache
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\obj\Debug\netcoreapp2.1\Core.AssemblyInfo.cs
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\obj\Debug\netcoreapp2.1\Core.dll
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\obj\Debug\netcoreapp2.1\Core.pdb
-C:\Users\m.akbari\Source\Repos\ConsoleApp1\Core\obj\Debug\netcoreapp2.1\Core.csprojAssemblyReference.cache
