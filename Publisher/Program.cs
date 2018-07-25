@@ -1,8 +1,6 @@
 ﻿using Core;
 using MassTransit;
-using MassTransit.RabbitMqTransport;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Publisher
@@ -11,47 +9,35 @@ namespace Publisher
     {
         static void Main(string[] args)
         {
-            Console.Title = "This is the customer registration command receiver.";
-            Console.WriteLine("CUSTOMER REGISTRATION COMMAND RECEIVER.");
+            Console.Title = "Publisher";
+            Console.WriteLine($"Publisher start at {DateTime.Now}");
 
-            IBusControl rabbitBusControl = Bus.Factory.CreateUsingRabbitMq(rabbit =>
+            var busControl = Bus.Factory.CreateUsingRabbitMq(rabbit =>
             {
-                IRabbitMqHost rabbitMqHost = rabbit.Host(new Uri("rabbitmq://localhost:5672"), settings =>
+                var host = rabbit.Host(new Uri("rabbitmq://localhost:5672"), settings =>
                 {
                     settings.Password("ninisite");
                     settings.Username("ninisite");
                 });
 
-                rabbit.ReceiveEndpoint(rabbitMqHost, "mycompany.domains.queues.events.customer", conf =>
+                rabbit.ReceiveEndpoint(host, "publisher", conf =>
                 {
-                    conf.Consumer<RegisterCustomerConsumer>();
+                    conf.Consumer<Consumer>();
                 });
             });
 
-            rabbitBusControl.Start();
-
-            for (int i = 0; i < 100000000; i++)
-            {
-                rabbitBusControl.Publish(new MessageCreated
-                {
-                    Text = $"message {i}"
-                });
-
-                Thread.Sleep(10);
-            }
-
+            busControl.Start();
             Console.ReadKey();
-
-            rabbitBusControl.Stop();
+            busControl.Stop();
         }
     }
 
-    public class RegisterCustomerConsumer : IConsumer<MessageCreated>
+    public class Consumer : IConsumer<MessageCreated>
     {
         public Task Consume(ConsumeContext<MessageCreated> context)
         {
             MessageCreated message = context.Message;
-            Console.WriteLine("A new customer has signed up, it's time to register it in the command receiver. Details: ");
+            Console.WriteLine($"Get {message.GetType()} at {DateTime.Now}");
             Console.WriteLine(message.Text);
 
             context.Publish(new MessagePublished

@@ -10,9 +10,10 @@ namespace Subscriber2
     {
         static void Main(string[] args)
         {
-            Console.Title = "Sales consumer";
-            Console.WriteLine("SALES");
-            IBusControl rabbitBusControl = Bus.Factory.CreateUsingRabbitMq(rabbit =>
+            Console.Title = "Subscriber2";
+            Console.WriteLine($"Subscriber2 start at {DateTime.Now}");
+
+            IBusControl busControl = Bus.Factory.CreateUsingRabbitMq(rabbit =>
             {
                 IRabbitMqHost rabbitMqHost = rabbit.Host(new Uri("rabbitmq://localhost:5672"), settings =>
                 {
@@ -20,30 +21,31 @@ namespace Subscriber2
                     settings.Username("ninisite");
                 });
 
-                rabbit.ReceiveEndpoint(rabbitMqHost, "mycompany.domains.queues.events.sales", conf =>
+                rabbit.ReceiveEndpoint(rabbitMqHost, "masstransitsample.queues.events.subscriber2", conf =>
                 {
-                    conf.Consumer<CustomerRegisteredConsumerSls>();
+                    conf.Consumer<Consumer>();
                 });
             });
 
-            rabbitBusControl.Start();
+            busControl.Start();
             Console.ReadKey();
-            rabbitBusControl.Stop();
+            busControl.Stop();
         }
     }
 
-    public class CustomerRegisteredConsumerSls : IConsumer<MessagePublished>
+    public class Consumer : IConsumer<MessagePublished>
     {
         public Task Consume(ConsumeContext<MessagePublished> context)
         {
             MessagePublished message = context.Message;
+
+            Console.WriteLine($"Get {message.GetType()} at {DateTime.Now}");
 
             var repository = new Repository();
 
             var id = repository.Add(message.Text);
             repository.Edit(id);
 
-            Console.WriteLine("Great to see the new customer finally being registered, a big sigh from sales!");
             Console.WriteLine(message.Text);
             return Task.FromResult(context.Message);
         }

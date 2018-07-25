@@ -10,8 +10,8 @@ namespace Subscriber1
     {
         static void Main(string[] args)
         {
-            Console.Title = "Management consumer";
-            Console.WriteLine("MANAGEMENT");
+            Console.Title = "Subscriber1";
+            Console.WriteLine($"Subscriber1 start at {DateTime.Now}");
 
             IBusControl rabbitBusControl = Bus.Factory.CreateUsingRabbitMq(rabbit =>
             {
@@ -21,11 +21,11 @@ namespace Subscriber1
                     settings.Username("ninisite");
                 });
 
-                rabbit.ReceiveEndpoint(rabbitMqHost, "mycompany.domains.queues.events.mgmt", conf =>
+                rabbit.ReceiveEndpoint(rabbitMqHost, "masstransitsample.queues.events.subscriber1", conf =>
                 {
                     //conf.PrefetchCount = 5;
 
-                    conf.Consumer<CustomerRegisteredConsumerMgmt>();
+                    conf.Consumer<Consumer>();
                 });
             });
             rabbitBusControl.Start();
@@ -34,18 +34,18 @@ namespace Subscriber1
         }
     }
 
-    public class CustomerRegisteredConsumerMgmt : IConsumer<MessagePublished>
+    public class Consumer : IConsumer<MessagePublished>
     {
         public Task Consume(ConsumeContext<MessagePublished> context)
         {
             MessagePublished message = context.Message;
+            Console.WriteLine($"Get {message.GetType()} at {DateTime.Now}");
 
             var repository = new Repository();
 
             var id = repository.Add(message.Text);
             repository.Edit(id);
 
-            Console.WriteLine("A new customer has been registered, congratulations from Management to all parties involved!");
             Console.WriteLine(message.Text);
             return Task.FromResult(context.Message);
         }
