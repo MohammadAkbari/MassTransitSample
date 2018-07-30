@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MassTransit.QuartzIntegration</name>
+    </assembly>
+    <members>
+        <member name="T:MassTransit.QuartzIntegration.Configuration.SchedulerBusObserver">
+            <summary>
+            Used to start and stop an in-memory scheduler using Quartz
+            </summary>
+        </member>
+        <member name="M:MassTransit.QuartzIntegration.MassTransitJobFactory`1.CreatePayloadHeaderString(Quartz.Spi.TriggerFiredBundle)">
+            <summary>
+            Some additional properties from the TriggerFiredBundle
+            There is a bug in RabbitMq.Client that prevents using the DateTimeOffset type in the headers
+            These values are being serialized as ISO-8601 round trip string
+            </summary>
+            <param name="bundle"></param>
+        </member>
+    </members>
+</doc>

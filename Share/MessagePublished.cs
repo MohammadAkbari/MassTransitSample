@@ -7,15 +7,7 @@ namespace Core
         public string Text { get; set; }
     }
 
-
-
-    public class ScheduleNotification
-    {
-        public DateTime DeliveryTime { get; set; }
-        public string Text { get; set; }
-    }
-
-    public class SendNotification
+    public class PublishMessage
     {
         public string Text { get; set; }
     }
